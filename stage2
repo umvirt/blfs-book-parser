@@ -1,0 +1,17 @@
+. config/config.sh
+
+ROOT=$PWD
+OUT=$ROOT/out
+TMP=$ROOT/tmp
+
+for file in `ls $OUT` ; do
+if [ -d $OUT/$file ]
+then
+
+echo "Processing: $OUT/$file ..."
+
+./parser.php $OUT/$file
+
+fi
+
+done

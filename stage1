@@ -1,0 +1,35 @@
+. config/config.sh
+
+ROOT=$PWD
+OUT=$ROOT/out
+TMP=$ROOT/tmp
+
+if [ ! -d $TMP/blfs ]; then
+
+echo "Cloning repo $GITREPO ..."
+git clone $GITREPO $TMP/blfs
+
+fi
+
+for BRANCH in `cat config/branches.txt` ; do
+echo "Processing branch: $BRANCH ..."
+cd $TMP/blfs
+
+git reset --hard
+git checkout $BRANCH
+cat .git/HEAD
+
+cd $ROOT
+
+cp -v data/blfs-files.patch $TMP
+cp -v data/dump-files.xsl $TMP/blfs/stylesheets
+cp -v data/dump-cmds.xsl $TMP/blfs/stylesheets
+
+cd $TMP/blfs
+
+patch -p1 < ../blfs-files.patch
+
+make REV=systemd FILESDIR=$OUT/blfs-$BRANCH-systemd dump-files
+make REV=sysv FILESDIR=$OUT/blfs-$BRANCH dump-files
+
+done

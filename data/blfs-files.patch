@@ -1,0 +1,37 @@
+diff --git a/Makefile b/Makefile
+index 29dbf79d4d..278652f591 100644
+--- a/Makefile
++++ b/Makefile
+@@ -32,6 +32,7 @@ endif
+ 
+ ifeq ($(REV), sysv)
+   BASEDIR         ?= $(HOME)/public_html/blfs-book
++  FILESDIR        ?= $(HOME)/public_html/blfs-files
+   NOCHUNKS_OUTPUT ?= blfs-book.html
+   DUMPDIR         ?= ~/blfs-commands
+   BLFSHTML        ?= blfs-html.xml
+@@ -39,6 +40,7 @@ ifeq ($(REV), sysv)
+   BLFSFULL        ?= blfs-full.xml
+ else
+   BASEDIR         ?= $(HOME)/public_html/blfs-systemd
++  FILESDIR        ?= $(HOME)/public_html/blfs-systemd-files
+   NOCHUNKS_OUTPUT ?= blfs-sysd-book.html
+   DUMPDIR         ?= ~/blfs-sysd-commands
+   BLFSHTML        ?= blfs-systemd-html.xml
+@@ -273,3 +275,16 @@ $(DUMPDIR): $(RENDERTMP)/$(BLFSFULL) version
+ 
+ version:
+ 	$(Q)./git-version.sh $(REV)
++
++dump-files: $(FILESDIR)
++$(FILESDIR): $(RENDERTMP)/$(BLFSFULL) version
++	@echo "Dumping book files..."
++	$(Q)xsltproc --output $(FILESDIR)/          \
++		stylesheets/dump-files.xsl \
++		$(RENDERTMP)/$(BLFSFULL)
++	$(Q)touch $(FILESDIR)
++	@echo "Dumping book commands..."
++	$(Q)xsltproc --output $(FILESDIR)/          \
++		stylesheets/dump-cmds.xsl \
++		$(RENDERTMP)/$(BLFSFULL)
++	$(Q)touch $(FILESDIR)
