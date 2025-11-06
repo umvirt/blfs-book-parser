@@ -1,0 +1,34 @@
+Umvirt BLFS parser
+
+XML format
+
+Version: 0.1
+
+Structure
+
+packages/
+  package/
+    code/
+    files/
+      file/
+        link
+        md5
+        filename
+    commands/
+      data
+      md5
+
+Description
+
+/packages - root element
+/packages/package - package information
+/packages/package/code - package codename
+/packages/package/files - package files container
+/packages/package/files/file - package file information
+/packages/package/files/file/link - link to download file
+/packages/package/files/file/md5 - MD5-checksum for file
+/packages/package/files/file/filename - file name
+/packages/package/commands/ - package commands container
+/packages/package/commands/data - base64 encoded package instructions
+/packages/package/commands/md5 - MD5-checksum for non-encoded package instructions string
+
