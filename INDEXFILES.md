@@ -307,11 +307,11 @@ Command to create packages files TSV files:
         m=`echo ../md5/$s | sed -e 's|.cmd$|.md5|'`
         if [ $v1 ]
         then
-            cat $m | sed -e "s|\$|\t$v1\t$p|" > $p.tsv
+            cat $m | sed -s 's/  /\t/' | sed -e "s|\$|\t$v1\t$p|" > $p.tsv
         fi
         if [ $v2 ]
         then
-            cat $m | sed -e "s|\$|\t$v2\t$p|" > $p.tsv
+            cat $m | sed -s 's/  /\t/' |sed -e "s|\$|\t$v2\t$p|" > $p.tsv
         fi
     done
 
