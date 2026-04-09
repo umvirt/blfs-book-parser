@@ -26,6 +26,14 @@ Informaton about BLFS packages can be used
 * to check source package files availability
 * to check source package files MD5 checksums
 
+## Disclaimer
+
+Data backup is needed before using this software.
+
+All running applications should be closed.
+
+** This software is can take all available memory which can hang a system, data loss and hardware damage!**
+
 ## How it works?
 
 BLFS source code parsing is not simple task because it have Docbook format not pure XML.

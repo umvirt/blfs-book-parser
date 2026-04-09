@@ -3,3 +3,4 @@ dirs:
 
 doc: 
 	markdown README.md > README.html
+	markdown INDEXFILES.md > INDEXFILES.html
