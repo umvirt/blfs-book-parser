@@ -7,6 +7,14 @@ echo "Error: Source directory not provided";
 exit;
 }
 
+function pkgname($s)
+{
+$a=explode('-',$s);
+unset($a[count($a)-1]);
+return join('-',$a);
+}
+
+
 function addValue(&$res, $p)
 {
 	//get value
@@ -90,6 +98,23 @@ $pkgs[]=$pkg;
 
 }
 
+
+function importfiles(&$pkgs, $p){
+//global $pkgs;
+$rows=File($p);
+foreach($rows as $row_){
+$row=trim($row_);
+$v=explode("\t",$row);
+echo pkgname($v[1])."\n";
+$files=array();
+$files[]=array('MD5'=>$v[0],'filename'=>$v[1],'link'=>$v[2].$v[1]);
+$pkgs[]=array('code'=>pkgname($v[1]),'files'=>$files);
+}
+
+}
+
+
+
 $pkgs=array();
 
 $dir=$argv[1];
@@ -97,13 +122,20 @@ $dir=$argv[1];
 if (is_dir($dir)) {
     if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) !== false) {
-        if(!in_array($file,array('.','..')) and !preg_match('/.cmd$/',$file))
+        //if(!in_array($file,array('.','..')) and !preg_match('/.cmd$/',$file))
+        if(preg_match('/.xml$/',$file))
         {
         scanFile($pkgs,$dir.'/'.$file);
         }
 //            echo "filename: $file : filetype: " . filetype($dir . $file) . "\n";
         }
         closedir($dh);
+    }
+
+$p=$dir.'/packages.lst';
+
+    if(file_exists($p)){
+	importfiles($pkgs,$p);
     }
 }
 
